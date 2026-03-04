@@ -1,3 +1,8 @@
-# Hello World!
+# Hewwo Pwincess
 
-This is **my website**! There is not much here *yet*, but I am working on it.
+Hello, my love! If you are reading this, then I have figured out how to
+1. Deploy my website,
+2. Update my website,
+3. ???
+4. Profit?
+Yup.
