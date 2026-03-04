@@ -70,10 +70,15 @@ class _MyHomePageState extends State<MyHomePage> {
           children: actions,
         ),
       ),
-      body: const MarkdownBody(
-        selectable: true,
-        data:
-            "# Hello there! I am markdown in Flutter. \n\n I am a seperate line.",
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Card(
+          child: const MarkdownBody(
+            selectable: true,
+            data:
+                "# Hello there! I am markdown in Flutter. \n\n I am a seperate line.",
+          ),
+        ),
       ),
     );
   }
