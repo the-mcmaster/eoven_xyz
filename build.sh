@@ -8,6 +8,8 @@ mv "$SCRIPT_DIR""/docs/CNAME" "$SCRIPT_DIR""/CNAME"
 
 echo "Building flutter application"
 cd "$SCRIPT_DIR""/flutter_app"
+flutter clean
+flutter pub get
 flutter build web --release --base-href "/"
 echo "Emptying docs directory"
 rm -rf ../docs
@@ -20,5 +22,8 @@ cp build/web/index.html ../docs/404.html
 
 echo "Moving stashed CNAME into docs"
 mv "$SCRIPT_DIR""/CNAME" "$SCRIPT_DIR""/docs/CNAME"
+
+flutter clean
+flutter pub get
 
 cd $PWD
