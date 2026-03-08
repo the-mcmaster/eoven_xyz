@@ -1,5 +1,11 @@
 #! /usr/bin/bash
 
+if [[ "$1" = "--debug" ]]; then
+  cd "$SCRIPT_DIR/flutter_app"
+  flutter run --release -d chrome
+  exit 0
+fi
+
 # ------------------------------------------------------------
 # EXIT HANDLING
 trap 'e=$?; [[ $e -ne 0 ]] && cleanup_on_fail "$e"' EXIT
