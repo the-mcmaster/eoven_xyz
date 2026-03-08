@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/404.dart';
 import 'package:flutter_app/about.dart';
+import 'package:flutter_app/blogs.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/page_layout.dart';
 
@@ -21,13 +22,15 @@ Padding textEntry(
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          data,
-          style: TextStyle(
-            fontSize: fontSize,
-            fontStyle: fontStyle,
-            fontWeight: fontWeight,
-            color: colors.onPrimary,
+        Flexible(
+          child: Text(
+            data,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontStyle: fontStyle,
+              fontWeight: fontWeight,
+              color: colors.onPrimary,
+            ),
           ),
         ),
       ],
@@ -39,11 +42,13 @@ Widget buildAppBarOptions(
   BuildContext context,
   String description,
   Widget icon,
-  void Function() onPressed,
-) {
+  void Function() onPressed, {
+  Key? key,
+}) {
   ColorScheme colors = Theme.of(context).colorScheme;
 
   return IconButton(
+    key: key,
     color: colors.onPrimary,
     hoverColor: colors.tertiary,
     onPressed: onPressed,
@@ -51,7 +56,12 @@ Widget buildAppBarOptions(
       children: [
         icon,
         if (MediaQuery.sizeOf(context).width > 600)
-          Text(description, style: TextStyle(color: colors.onPrimary)),
+          Text(
+            description,
+            style: TextStyle(
+              color: colors.onPrimary,
+            ),
+          ),
       ],
     ),
   );
@@ -70,13 +80,12 @@ class _MyAppState extends State<MyApp> {
 
   void _toggleTheme() {
     setState(() {
-      _themeMode = _themeMode == ThemeMode.light
-          ? ThemeMode.dark
-          : ThemeMode.light;
+      _themeMode =
+          _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     });
   }
 
-  PageLayout buildPage(Widget body) {
+  PageLayout _buildPage(Widget body) {
     return PageLayout(
       body: body,
       onToggleTheme: _toggleTheme,
@@ -92,7 +101,7 @@ class _MyAppState extends State<MyApp> {
   }) {
     return PageRouteBuilder(
       settings: settings,
-      pageBuilder: (context, animation, secondaryAnimation) => buildPage(body),
+      pageBuilder: (context, animation, secondaryAnimation) => _buildPage(body),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(opacity: animation, child: child);
       },
@@ -145,14 +154,34 @@ class _MyAppState extends State<MyApp> {
       initialRoute: '/',
       onGenerateRoute: (settings) {
         if (settings.name == '/') {
-          return buildRoute(context, settings, HomePage());
+          return buildRoute(
+            context,
+            settings,
+            HomePage(),
+          );
         }
 
         if (settings.name == '/about') {
-          return buildRoute(context, settings, AboutPage());
+          return buildRoute(
+            context,
+            settings,
+            AboutPage(),
+          );
         }
 
-        return buildRoute(context, settings, Error404());
+        if (settings.name == '/blogs') {
+          return buildRoute(
+            context,
+            settings,
+            BlogsPage(),
+          );
+        }
+
+        return buildRoute(
+          context,
+          settings,
+          Error404(),
+        );
       },
     );
   }

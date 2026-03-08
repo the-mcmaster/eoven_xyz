@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/404.dart';
 import 'package:flutter_app/about.dart';
+import 'package:flutter_app/blogs.dart';
 import 'package:flutter_app/main.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -55,7 +56,7 @@ class PageLayout extends StatelessWidget {
               "Blog Posts",
               HugeIcon(icon: HugeIcons.strokeRoundedBooks02),
               () => Navigator.pushReplacementNamed(context, '/blogs',
-                  result: MyCustomRoute(builder: (context) => Error404())),
+                  result: MyCustomRoute(builder: (context) => BlogsPage())),
             ),
             buildAppBarOptions(
               context,
