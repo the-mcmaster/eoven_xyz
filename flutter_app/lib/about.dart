@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -13,9 +9,6 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  String data =
-      File("${Directory.current.path}/../pages/about.md").readAsStringSync();
-
   @override
   Widget build(BuildContext context) {
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -26,19 +19,8 @@ class _AboutPageState extends State<AboutPage> {
           padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Hello There",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: colors.onPrimary,
-                    ),
-                  ),
-                ],
-              ),
+              textEntry(colors, "The Whole Point", fontSize: 32, fontWeight: FontWeight.bold),
+              textEntry(colors, "The simple pleasures in my life are learning, building, and explaining.", fontStyle: FontStyle.italic, withPadding: EdgeInsets.fromLTRB(200, 8, 200, 8)),
             ],
           )),
     );

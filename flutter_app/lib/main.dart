@@ -3,7 +3,6 @@ import 'package:flutter_app/404.dart';
 import 'package:flutter_app/about.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/page_layout.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 void main() {
   runApp(MyApp());
