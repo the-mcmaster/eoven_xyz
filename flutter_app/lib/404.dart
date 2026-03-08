@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/main.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
 class Error404 extends StatefulWidget {
   const Error404({super.key});
