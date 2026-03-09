@@ -129,7 +129,12 @@ FLUTTER_CLEANED=1
 flutter pub get
 FLUTTER_PUB_GET=1
 
-flutter build web --release --base-href "/docs/"
+# #region agent log
+# GitHub Pages serves the *contents* of docs/ at the site ROOT (not under /docs/).
+# So base must be "/" so assets resolve to e.g. /flutter_bootstrap.js, /manifest.json.
+FLUTTER_BASE_HREF="/"
+# #endregion
+flutter build web --release --base-href "$FLUTTER_BASE_HREF"
 FLUTTER_BUILT=1
 
 # 4. Verify Build Output
@@ -149,6 +154,16 @@ if [[ ! -f "$SCRIPT_DIR/docs/index.html" ]]; then
   echo "Error: Failed to copy index.html to the new docs directory." >&2
   exit 1
 fi
+
+# #region agent log
+DEBUG_LOG="$SCRIPT_DIR/.cursor/debug-f63e80.log"
+mkdir -p "$(dirname "$DEBUG_LOG")"
+_has_manifest=0
+_has_bootstrap=0
+[[ -f "$SCRIPT_DIR/docs/manifest.json" ]] && _has_manifest=1
+[[ -f "$SCRIPT_DIR/docs/flutter_bootstrap.js" ]] && _has_bootstrap=1
+printf '%s\n' "{\"sessionId\":\"f63e80\",\"location\":\"build.sh:post-copy\",\"message\":\"base-href and docs assets\",\"data\":{\"baseHref\":\"$FLUTTER_BASE_HREF\",\"docsHasManifest\":$_has_manifest,\"docsHasBootstrap\":$_has_bootstrap},\"timestamp\":$(date +%s000),\"hypothesisId\":\"A\",\"runId\":\"build\"}" >> "$DEBUG_LOG"
+# #endregion
 
 # 6. Generate 404.html and Restore CNAME
 echo "Generating docs/404.html..."
