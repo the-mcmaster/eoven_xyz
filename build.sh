@@ -129,7 +129,7 @@ FLUTTER_CLEANED=1
 flutter pub get
 FLUTTER_PUB_GET=1
 
-flutter build web --release --base-href "/docs/"
+flutter build web --release --base-href "/"
 FLUTTER_BUILT=1
 
 # 4. Verify Build Output
