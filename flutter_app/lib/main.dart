@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/404.dart';
-import 'package:flutter_app/about.dart';
+import 'package:flutter_app/linkedin_page.dart';
 import 'package:flutter_app/blogs.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/page_layout.dart';
+import 'package:flutter_app/repos.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
+}
+
+Future<void> attemptUrlLaunch(String urlString) async {
+  final Uri url = Uri.parse(urlString);
+  if (!await launchUrl(url)) {
+    throw 'Could not launch $url';
+  }
 }
 
 Padding textEntry(
@@ -77,6 +86,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   // 1. The state that controls the theme
   ThemeMode _themeMode = ThemeMode.dark;
+  final ValueNotifier<AppBarButtonCenters?> _appBarCenters =
+      ValueNotifier<AppBarButtonCenters?>(null);
 
   void _toggleTheme() {
     setState(() {
@@ -85,11 +96,20 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  @override
+  void dispose() {
+    _appBarCenters.dispose();
+    super.dispose();
+  }
+
   PageLayout _buildPage(Widget body) {
     return PageLayout(
       body: body,
       onToggleTheme: _toggleTheme,
       themeMode: _themeMode,
+      onAppBarCentersUpdated: (centers) {
+        _appBarCenters.value = centers;
+      },
     );
   }
 
@@ -157,15 +177,15 @@ class _MyAppState extends State<MyApp> {
           return buildRoute(
             context,
             settings,
-            HomePage(),
+            HomePage(appBarCentersListenable: _appBarCenters),
           );
         }
 
-        if (settings.name == '/about') {
+        if (settings.name == '/linkedin') {
           return buildRoute(
             context,
             settings,
-            AboutPage(),
+            LinkedinPage(url: "https://www.linkedin.com/in/eric-ovenden"),
           );
         }
 
@@ -174,6 +194,14 @@ class _MyAppState extends State<MyApp> {
             context,
             settings,
             BlogsPage(),
+          );
+        }
+
+        if (settings.name == '/repos') {
+          return buildRoute(
+            context,
+            settings,
+            ReposPage(url: "https://github.com/the-mcmaster"),
           );
         }
 
