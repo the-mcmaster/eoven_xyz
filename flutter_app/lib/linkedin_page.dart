@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/main.dart';
+import 'package:flutter_app/lib.dart';
 
 class LinkedinPage extends StatefulWidget {
   const LinkedinPage({required this.url, super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/main.dart';
+import 'package:flutter_app/lib.dart';
 
 class Error404 extends StatefulWidget {
   const Error404({super.key});
@@ -20,12 +20,12 @@ class _Error404State extends State<Error404> {
         padding: const EdgeInsets.fromLTRB(horizontal, 50, horizontal, 10),
         child: Column(
           children: [
-            textEntry(colors, "404", fontSize: 40, fontWeight: FontWeight.bold),
-            textEntry(
+            paragraph(colors, "404", fontSize: 40, fontWeight: FontWeight.bold, alignment: MainAxisAlignment.center,),
+            paragraph(
               colors,
               "You have accessed an unused, inaccessible, or incorrect webpage.",
               fontStyle: FontStyle.italic,
-              withPadding: EdgeInsets.fromLTRB(horizontal, 50, horizontal, 8),
+              alignment: MainAxisAlignment.center,
             )
           ],
         ),

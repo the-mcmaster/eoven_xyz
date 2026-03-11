@@ -5,75 +5,9 @@ import 'package:flutter_app/blogs.dart';
 import 'package:flutter_app/home.dart';
 import 'package:flutter_app/page_layout.dart';
 import 'package:flutter_app/repos.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
-}
-
-Future<void> attemptUrlLaunch(String urlString) async {
-  final Uri url = Uri.parse(urlString);
-  if (!await launchUrl(url)) {
-    throw 'Could not launch $url';
-  }
-}
-
-Padding textEntry(
-  ColorScheme colors,
-  String data, {
-  double fontSize = 20,
-  FontStyle fontStyle = FontStyle.normal,
-  FontWeight fontWeight = FontWeight.normal,
-  EdgeInsets withPadding = const EdgeInsets.all(0),
-}) {
-  return Padding(
-    padding: withPadding,
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Flexible(
-          child: Text(
-            data,
-            style: TextStyle(
-              fontSize: fontSize,
-              fontStyle: fontStyle,
-              fontWeight: fontWeight,
-              color: colors.onPrimary,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget buildAppBarOptions(
-  BuildContext context,
-  String description,
-  Widget icon,
-  void Function() onPressed, {
-  Key? key,
-}) {
-  ColorScheme colors = Theme.of(context).colorScheme;
-
-  return IconButton(
-    key: key,
-    color: colors.onPrimary,
-    hoverColor: colors.tertiary,
-    onPressed: onPressed,
-    icon: Row(
-      children: [
-        icon,
-        if (MediaQuery.sizeOf(context).width > 600)
-          Text(
-            description,
-            style: TextStyle(
-              color: colors.onPrimary,
-            ),
-          ),
-      ],
-    ),
-  );
 }
 
 class MyApp extends StatefulWidget {

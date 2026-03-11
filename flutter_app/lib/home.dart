@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/main.dart';
+import 'package:flutter_app/lib.dart';
 import 'package:flutter_app/page_layout.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:flutter/foundation.dart';
@@ -34,10 +34,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  EdgeInsets _paragraphPad(double width) {
-    return EdgeInsets.fromLTRB(width, 50, width, 0);
-  }
-
   @override
   Widget build(BuildContext context) {
     ColorScheme colors = Theme.of(context).colorScheme;
@@ -46,27 +42,6 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _measureTopBar();
     });
-
-    const double desiredHomeWidth = 900;
-    const double desiredParagraphPadding = 50;
-    double minHomeWidth = (screenSize.width > desiredHomeWidth)
-        ? screenSize.width
-        : desiredHomeWidth;
-    double paragraphPadding = (screenSize.width - desiredHomeWidth >
-            2 * desiredParagraphPadding)
-        ? (screenSize.width - desiredHomeWidth - 2 * desiredParagraphPadding) /
-            2
-        : (screenSize.width - desiredHomeWidth > 0)
-            ? screenSize.width - desiredHomeWidth
-            : 0;
-
-    Widget paragraphEntry(String data) {
-      return textEntry(
-        colors,
-        data,
-        withPadding: _paragraphPad(paragraphPadding),
-      );
-    }
 
     const double topBarHeight = 72;
     const double iconSize = 32;
@@ -139,9 +114,14 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
+    double minParagraphPadding = (screenSize.width > 1668)
+        ? 500
+        : (screenSize.width <= 688)
+            ? 8
+            : (screenSize.width - 668) / 2;
+
     return Container(
       color: colors.primary,
-      width: minHomeWidth,
       child: Column(
         children: [
           ValueListenableBuilder<AppBarButtonCenters?>(
@@ -150,14 +130,44 @@ class _HomePageState extends State<HomePage> {
               return buildTopBar(centers);
             },
           ),
-          textEntry(
-            colors,
-            "Eric Ovenden",
-            fontSize: 40,
-            fontWeight: FontWeight.bold,
-          ),
-          paragraphEntry(
-            "This website hosts my software portfolio, blog posts, and my linkedin.",
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+                minParagraphPadding, 50, minParagraphPadding, 50),
+            child: Container(
+              color: colors.tertiary,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: colors.secondary.withValues(alpha: 0.9),
+                  child: Column(
+                    children: [
+                      paragraph(
+                        colors,
+                        "Eric Ovenden",
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        alignment: MainAxisAlignment.center,
+                      ),
+                      paragraph(
+                        colors,
+                        "This website hosts my software portfolio, blog posts, and my linkedin.",
+                        alignment: MainAxisAlignment.center,
+                      ),
+                      paragraph(
+                        colors,
+                        "Use any of the buttons above to navigate.",
+                        alignment: MainAxisAlignment.center,
+                      ),
+                      paragraph(
+                        colors,
+                        "And it won't stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming and it won'r stop coming until it did.",
+                        alignment: MainAxisAlignment.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

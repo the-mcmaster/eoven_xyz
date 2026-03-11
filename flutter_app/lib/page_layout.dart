@@ -2,8 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/404.dart';
 import 'package:flutter_app/blogs.dart';
 import 'package:flutter_app/linkedin_page.dart';
-import 'package:flutter_app/main.dart';
 import 'package:hugeicons/hugeicons.dart';
+
+Widget buildAppBarOptions(
+  BuildContext context,
+  String description,
+  Widget icon,
+  void Function() onPressed, {
+  Key? key,
+}) {
+  ColorScheme colors = Theme.of(context).colorScheme;
+
+  return IconButton(
+    key: key,
+    color: colors.onPrimary,
+    hoverColor: colors.tertiary,
+    onPressed: onPressed,
+    icon: Row(
+      children: [
+        icon,
+        if (MediaQuery.sizeOf(context).width > 600)
+          Text(
+            description,
+            style: TextStyle(
+              color: colors.onPrimary,
+            ),
+          ),
+      ],
+    ),
+  );
+}
 
 class AppBarButtonCenters {
   final double linkedin;
@@ -28,11 +56,16 @@ class MyCustomRoute<T> extends MaterialPageRoute<T> {
   }
 }
 
-class PageLayout extends StatelessWidget {
+// ignore: must_be_immutable
+class PageLayout extends StatefulWidget {
   final Widget body;
-  final VoidCallback onToggleTheme;
+  final onToggleTheme;
   final ThemeMode themeMode;
-  final ValueChanged<AppBarButtonCenters>? onAppBarCentersUpdated;
+  ValueChanged<AppBarButtonCenters>? onAppBarCentersUpdated;
+
+  final GlobalKey _linkedinKey = GlobalKey();
+  final GlobalKey _blogsKey = GlobalKey();
+  final GlobalKey _reposKey = GlobalKey();
 
   PageLayout({
     super.key,
@@ -42,39 +75,50 @@ class PageLayout extends StatelessWidget {
     this.onAppBarCentersUpdated,
   });
 
-  final GlobalKey _linkedinKey = GlobalKey();
-  final GlobalKey _blogsKey = GlobalKey();
-  final GlobalKey _reposKey = GlobalKey();
+  @override
+  State<PageLayout> createState() => _PageLayoutState();
+}
 
-  void _notifyButtonCenters() {
-    if (onAppBarCentersUpdated == null) return;
+class _PageLayoutState extends State<PageLayout> {
+  final ScrollController _controller = ScrollController();
 
-    final linkedinBox =
-        _linkedinKey.currentContext?.findRenderObject() as RenderBox?;
-    final blogsBox =
-        _blogsKey.currentContext?.findRenderObject() as RenderBox?;
-    final reposBox =
-        _reposKey.currentContext?.findRenderObject() as RenderBox?;
-
-    if (linkedinBox == null || blogsBox == null || reposBox == null) {
-      return;
-    }
-
-    final linkedinOffset = linkedinBox.localToGlobal(Offset.zero);
-    final blogsOffset = blogsBox.localToGlobal(Offset.zero);
-    final reposOffset = reposBox.localToGlobal(Offset.zero);
-
-    final centers = AppBarButtonCenters(
-      linkedin: linkedinOffset.dx + linkedinBox.size.width / 2,
-      blogs: blogsOffset.dx + blogsBox.size.width / 2,
-      repos: reposOffset.dx + reposBox.size.width / 2,
-    );
-
-    onAppBarCentersUpdated!(centers);
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
+
+  _PageLayoutState();
 
   @override
   Widget build(BuildContext context) {
+    void _notifyButtonCenters() {
+      if (widget.onAppBarCentersUpdated == null) return;
+
+      final linkedinBox =
+          widget._linkedinKey.currentContext?.findRenderObject() as RenderBox?;
+      final blogsBox =
+          widget._blogsKey.currentContext?.findRenderObject() as RenderBox?;
+      final reposBox =
+          widget._reposKey.currentContext?.findRenderObject() as RenderBox?;
+
+      if (linkedinBox == null || blogsBox == null || reposBox == null) {
+        return;
+      }
+
+      final linkedinOffset = linkedinBox.localToGlobal(Offset.zero);
+      final blogsOffset = blogsBox.localToGlobal(Offset.zero);
+      final reposOffset = reposBox.localToGlobal(Offset.zero);
+
+      final centers = AppBarButtonCenters(
+        linkedin: linkedinOffset.dx + linkedinBox.size.width / 2,
+        blogs: blogsOffset.dx + blogsBox.size.width / 2,
+        repos: reposOffset.dx + reposBox.size.width / 2,
+      );
+
+      widget.onAppBarCentersUpdated!(centers);
+    }
+
     // Now 'context' is UNDER MaterialApp, so Theme.of and Navigator will work!
     ColorScheme colors = Theme.of(context).colorScheme;
 
@@ -100,7 +144,7 @@ class PageLayout extends StatelessWidget {
               HugeIcon(icon: HugeIcons.strokeRoundedGithub01),
               () => Navigator.pushReplacementNamed(context, '/repos',
                   result: MyCustomRoute(builder: (context) => Error404())),
-              key: _reposKey,
+              key: widget._reposKey,
             ),
             buildAppBarOptions(
               context,
@@ -108,15 +152,17 @@ class PageLayout extends StatelessWidget {
               HugeIcon(icon: HugeIcons.strokeRoundedBooks02),
               () => Navigator.pushReplacementNamed(context, '/blogs',
                   result: MyCustomRoute(builder: (context) => BlogsPage())),
-              key: _blogsKey,
+              key: widget._blogsKey,
             ),
             buildAppBarOptions(
               context,
               "Linkedin",
               HugeIcon(icon: HugeIcons.strokeRoundedShareKnowledge),
               () => Navigator.pushReplacementNamed(context, '/linkedin',
-                  result: MyCustomRoute(builder: (context) => LinkedinPage(url: "https://www.linkedin.com/in/eric-ovenden"))),
-              key: _linkedinKey,
+                  result: MyCustomRoute(
+                      builder: (context) => LinkedinPage(
+                          url: "https://www.linkedin.com/in/eric-ovenden"))),
+              key: widget._linkedinKey,
             ),
           ],
         ),
@@ -129,11 +175,15 @@ class PageLayout extends StatelessWidget {
                   ? HugeIcons.strokeRoundedSunset
                   : HugeIcons.strokeRoundedSunrise,
             ),
-            onToggleTheme,
+            widget.onToggleTheme,
           )
         ],
       ),
-      body: body,
+      body: Scrollbar(
+        trackVisibility: true,
+        thickness: 8,
+        child: ListView(children: [widget.body]),
+      ),
     );
   }
 }
