@@ -151,7 +151,9 @@ class _PageLayoutState extends State<PageLayout> {
               "Blog Posts",
               HugeIcon(icon: HugeIcons.strokeRoundedBooks02),
               () => Navigator.pushReplacementNamed(context, '/blogs',
-                  result: MyCustomRoute(builder: (context) => BlogsPage())),
+                  result: MyCustomRoute(
+                      builder: (context) =>
+                          BlogsPage(url: "https://blogs.e-oven.xyz"))),
               key: widget._blogsKey,
             ),
             buildAppBarOptions(

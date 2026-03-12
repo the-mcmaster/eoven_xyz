@@ -127,7 +127,9 @@ class _MyAppState extends State<MyApp> {
           return buildRoute(
             context,
             settings,
-            BlogsPage(),
+            BlogsPage(
+              url: "https://blogs.e-oven.xyz",
+            ),
           );
         }
 
